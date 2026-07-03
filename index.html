@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Нова Сервис | Аренда ноутбуков — стиль, скорость, сервис</title>
+    <meta name="description" content="Аренда ноутбуков в «Нова Сервис». Premium-состояние, быстрая доставка, замена 2 часа. От 350₽/сутки.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Основная фавиконка -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<!-- Для PNG (если есть) -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<!-- Для Apple (iPhone/iPad) -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+
+    <!-- Контейнер для сборки -->
+    <div id="app"></div>
+
+    <script>
+        // Функция загрузки секций
+        async function loadSections() {
+            const app = document.getElementById('app');
+            
+            const sections = [
+                'sections/notification.html',
+                'sections/header.html',
+                'sections/hero.html',
+                'sections/catalog-work.html',
+                'sections/catalog-gaming.html',
+                'sections/catalog-accessories.html',
+                'sections/conditions.html',
+                'sections/form.html',
+                'sections/footer.html'
+            ];
+
+            let html = '';
+            for (const section of sections) {
+                try {
+                    const response = await fetch(section);
+                    if (response.ok) {
+                        html += await response.text();
+                    } else {
+                        console.warn(`Не удалось загрузить: ${section}`);
+                    }
+                } catch (error) {
+                    console.warn(`Ошибка загрузки ${section}:`, error);
+                }
+            }
+            
+            app.innerHTML = html;
+            
+            // Инициализируем скрипты после загрузки HTML
+            initApp();
+        }
+
+        function initApp() {
+            // Загружаем скрипты динамически после сборки DOM
+            const scripts = [
+                'js/config.js',
+                'js/calculator.js',
+                'js/form.js',
+                'js/main.js'
+            ];
+
+            scripts.forEach(src => {
+                const script = document.createElement('script');
+                script.src = src;
+                document.body.appendChild(script);
+            });
+        }
+
+        // Запускаем сборку
+        loadSections();
+    </script>
+</body>
+</html>
